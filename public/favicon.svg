@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title>SB Monogram</title>
+  <defs>
+    <linearGradient id="grad" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#0f172a" />
+      <stop offset="1" stop-color="#1d4ed8" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#grad)" />
+  <path
+    fill="#f8fafc"
+    d="M22 18h13.5c5.3 0 9.5 3.6 9.5 8.2 0 3.1-1.8 5.7-4.7 7 4.1 1 6.7 3.9 6.7 7.8 0 5.2-4.6 9-10.7 9H22V18zm6.5 12.6h7.2c2 0 3.4-1.2 3.4-2.8 0-1.7-1.3-2.8-3.4-2.8h-7.2v5.6zm0 15h7.9c2.5 0 4-1.2 4-3.1 0-1.8-1.6-3.1-4-3.1h-7.9v6.2z"
+  />
+</svg>

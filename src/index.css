@@ -1,0 +1,140 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
+All colors MUST be HSL.
+*/
+
+@layer base {
+  :root {
+    /* Academic Professional Color Palette */
+    --background: 0 0% 100%;
+    --foreground: 222 20% 15%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222 20% 15%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222 20% 15%;
+
+    /* Deep Academic Blue - Primary Brand */
+    --primary: 217 91% 45%;
+    --primary-foreground: 0 0% 100%;
+    --primary-light: 217 85% 55%;
+    --primary-dark: 217 95% 35%;
+
+    /* Sophisticated Grey - Secondary */
+    --secondary: 215 25% 96%;
+    --secondary-foreground: 222 20% 25%;
+
+    /* Refined Muted Tones */
+    --muted: 215 25% 97%;
+    --muted-foreground: 217 15% 50%;
+
+    /* Professional Accent - Refined Gold */
+    --accent: 38 90% 50%;
+    --accent-foreground: 222 20% 15%;
+
+    --destructive: 0 84.2% 60.2%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 215 25% 88%;
+    --input: 215 25% 94%;
+    --ring: 217 91% 45%;
+
+    --radius: 0.5rem;
+
+    /* Hero Section */
+    --hero-gradient-start: 217 91% 45%;
+    --hero-gradient-end: 217 85% 55%;
+
+    /* Card Shadows */
+    --shadow-soft: 0 2px 8px -2px hsl(215 25% 25% / 0.08);
+    --shadow-medium: 0 4px 16px -4px hsl(215 25% 25% / 0.12);
+    --shadow-strong: 0 8px 32px -8px hsl(215 25% 25% / 0.16);
+
+    /* Transitions */
+    --transition-smooth: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .dark {
+    --background: 220 20% 12%;
+    --foreground: 0 0% 95%;
+
+    --card: 220 18% 16%;
+    --card-foreground: 0 0% 95%;
+
+    --popover: 220 18% 16%;
+    --popover-foreground: 0 0% 95%;
+
+    --primary: 217 85% 55%;
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 15% 20%;
+    --secondary-foreground: 0 0% 90%;
+
+    --muted: 220 15% 22%;
+    --muted-foreground: 215 15% 60%;
+
+    --accent: 38 90% 50%;
+    --accent-foreground: 220 15% 15%;
+
+    --destructive: 0 62.8% 50%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 220 15% 25%;
+    --input: 220 15% 22%;
+    --ring: 217 85% 55%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "kern" 1, "liga" 1;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-semibold text-foreground;
+    letter-spacing: -0.02em;
+  }
+
+  h1 {
+    @apply text-4xl md:text-5xl lg:text-6xl;
+  }
+
+  h2 {
+    @apply text-3xl md:text-4xl;
+  }
+
+  h3 {
+    @apply text-2xl md:text-3xl;
+  }
+
+  section {
+    @apply py-16 md:py-20 lg:py-24;
+  }
+}
+
+@layer utilities {
+  .card-hover {
+    @apply transition-all duration-300 hover:shadow-lg hover:-translate-y-1;
+  }
+
+  .hero-gradient {
+    background: linear-gradient(135deg, hsl(var(--hero-gradient-start)), hsl(var(--hero-gradient-end)));
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+}
