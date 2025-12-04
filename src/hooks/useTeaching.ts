@@ -13,7 +13,7 @@ const useTeaching = (() => {
       setLoading(true);
   
       apiClient
-        .get<Course[]>("/courses/")
+        .get<Course[]>("courses/")
         .then((response) => {
           if (mounted && Array.isArray(response.data)) {
             setCoursesData(response.data);

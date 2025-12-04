@@ -45,7 +45,7 @@ const ResearchAreas = ({
     setLoading(true);
 
     apiClient
-      .get<ResearchArea[]>("/research-areas/")
+      .get<ResearchArea[]>("research-areas/")
       .then((response) => {
         if (mounted && Array.isArray(response.data)) {
           setResearchAreasData(response.data);

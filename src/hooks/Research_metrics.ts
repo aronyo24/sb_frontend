@@ -11,7 +11,7 @@ const useResearchMetrics = () => {
       setLoading(true);
   
       apiClient
-        .get<ResearchMetrics[]>("/research-metrics/")
+        .get<ResearchMetrics[]>("research-metrics/")
         .then((response) => {
           if (mounted && Array.isArray(response.data)) {
             setResearchMetricsData(response.data);

@@ -18,7 +18,7 @@ const ProjectsPage = () => {
     setLoading(true);
 
     apiClient
-      .get<Project[]>("/projects/")
+      .get<Project[]>("projects/")
       .then((response) => {
         if (mounted && Array.isArray(response.data)) {
           setProjectsData(response.data);

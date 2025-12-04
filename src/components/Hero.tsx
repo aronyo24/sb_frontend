@@ -42,7 +42,7 @@ const Hero = () => {
   return (
     <section
       id="home"
-      className="overflow-hidden lg:min-h-[85vh] bg-emerald-50"
+      className="overflow-hidden lg:min-h-[85vh] bg-gradient-to-br from-sky-50 via-white to-emerald-50 "
       aria-labelledby="hero-heading"
     >
       <div className="absolute inset-0 opacity-[0.08] pb-24" />

@@ -17,7 +17,7 @@ const ResearchPage = () => {
     <div className="min-h-screen flex flex-col">
       <Navigation />
       <main className="flex-1 pt-1">
-        <section className="bg-gradient-to-br from-sky-50 via-white to-emerald-50 border-b">
+        <section className="bg-gradient-to-br from-sky-50 via-white to-emerald-50  border-b">
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div className="max-w-3xl space-y-6">
               <Badge variant="outline" className="uppercase tracking-wide text-xs">

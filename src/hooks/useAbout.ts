@@ -11,7 +11,7 @@ const useAbout = () => {
       setLoading(true);
   
       apiClient
-        .get<CareerTimeline[]>("/career-timeline/")
+        .get<CareerTimeline[]>("career-timeline/")
         .then((response) => {
           if (mounted && Array.isArray(response.data)) {
             setCareerTimelineData(response.data);
