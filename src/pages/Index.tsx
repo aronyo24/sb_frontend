@@ -7,16 +7,18 @@ import Footer from "@/components/Footer";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { researchAreas, researchHighlights } from "@/data/research";
+
 
 import useTeaching  from "@/hooks/useTeaching";
 import { useProjects } from "@/hooks/useProjects";
 import { ResearchMetrics } from "@/types/interface";
 import useResearchMetrics from "@/hooks/Research_metrics";
+import useResearchHighlights from "@/hooks/useResearchHighlights";
 const Index = () => {
   const { projectsData, loading } = useProjects();
+  const { highlights: researchHighlightData, loading: highlightsLoading, error: highlightsError } = useResearchHighlights();
   // const projectsData = featuredProjects;
-  const featuredResearch = researchAreas.slice(0, 3);
+  const featuredResearch = researchHighlightData.slice(0, 3);
   const featuredProjects = projectsData.slice(0, 2); 
   const { coursesData, loading: coursesLoading } = useTeaching();
   const featuredCourses = coursesData.slice(0, 2);
@@ -179,7 +181,7 @@ const Index = () => {
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                  {researchHighlights.map((item) => (
+                  {researchHighlightData.map((item) => (
                     <div key={item.title} className="rounded-lg border border-border/60 bg-background p-4">
                       <h3 className="text-sm font-semibold mb-2 text-foreground">{item.title}</h3>
                       <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>

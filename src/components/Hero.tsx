@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Mail, Download, GraduationCap } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { researchMetrics } from "@/data/research";
+// import { researchMetrics } from "@/data/research";
 
 import { apiClient } from "@/api/apiClient";
 import { Homepage } from "@/types/interface";
