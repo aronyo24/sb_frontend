@@ -15,14 +15,15 @@ type ResearchAreasProps = {
 };
 
 // Helper: always return an array of strings
-const getFocusPoints = (focus_points: unknown): string[] => {
-  if (Array.isArray(focus_points)) {
-    return focus_points.filter((item): item is string => typeof item === "string");
+const getFocusPoints = (focusPoints: ResearchArea["focus_points"]): string[] => {
+  if (Array.isArray(focusPoints)) {
+    return focusPoints
+      .map((item) => item.trim())
+      .filter((item): item is string => item.length > 0);
   }
 
-  if (typeof focus_points === "string") {
-    // e.g. "AI, Machine Learning, Security"
-    return focus_points
+  if (typeof focusPoints === "string") {
+    return focusPoints
       .split(",")
       .map((item) => item.trim())
       .filter((item) => item.length > 0);
@@ -78,7 +79,7 @@ const ResearchAreas = ({
         {/* Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8 max-w-7xl mx-auto">
           {researchAreasData.map((area, index) => {
-            const focusPoints = getFocusPoints((area as any).focus_points);
+            const focusPoints = getFocusPoints(area.focus_points);
 
             return (
               <Card key={index} className="card-hover border-0 shadow-md">

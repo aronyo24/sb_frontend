@@ -1,17 +1,24 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 
 import Navigation from "@/components/Navigation";
 import Footer from "@/components/Footer";
 import Projectslist from "@/components/Projects";
 import { Card, CardContent, CardHeader ,CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { deliveryApproach } from "@/data/projects"; 
 import { apiClient } from "@/api/apiClient";
 import { Project } from "@/types/interface";
+import useProjectHero from "@/hooks/useProjectHero";
+import useDeliveryApproach from "@/hooks/useDeliveryApproach";
 
 const ProjectsPage = () => {
   const [projectsData, setProjectsData] = useState<Project[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+  const { hero, error: heroError } = useProjectHero();
+  const {
+    approach,
+    loading: approachLoading,
+    error: approachError,
+  } = useDeliveryApproach();
 
   useEffect(() => {
     let mounted = true;
@@ -45,15 +52,19 @@ const ProjectsPage = () => {
           <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-12">
             <div className="max-w-3xl space-y-6">
               <Badge variant="outline" className="uppercase tracking-wide text-xs">
-                Research Delivery
+                {hero.badge_label ?? "Research Delivery"}
               </Badge>
               <h1 className="text-4xl font-bold tracking-tight text-foreground">
-                Co-creating impactful digital infrastructure with partners
+                {hero.title}
               </h1>
               <p className="text-lg text-muted-foreground">
-                From cross-sector consortia to agile proof-of-concepts, each project is grounded in responsible innovation
-                and measurable outcomes that strengthen digital trust.
+                {hero.description}
               </p>
+              {heroError && (
+                <p className="text-xs text-amber-600 bg-amber-100/60 rounded-md px-3 py-2 inline-block">
+                  Showing the latest published overview while live updates are in progress.
+                </p>
+              )}
             </div>
           </div>
         </section>
@@ -66,17 +77,36 @@ const ProjectsPage = () => {
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {deliveryApproach.map((item) => (
-                <Card key={item.phase} className="card-hover h-full">
-                  <CardHeader>
-                    <CardTitle className="text-lg">{item.phase}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{item.summary}</p>
+              {approachLoading ? (
+                <Card className="card-hover h-full">
+                  <CardContent className="p-6 text-center text-sm text-muted-foreground">
+                    Loading delivery approach…
                   </CardContent>
                 </Card>
-              ))}
+              ) : approach.length > 0 ? (
+                approach.map((item) => (
+                  <Card key={item.id} className="card-hover h-full">
+                    <CardHeader>
+                      <CardTitle className="text-lg">{item.phase}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{item.summary}</p>
+                    </CardContent>
+                  </Card>
+                ))
+              ) : (
+                <Card className="card-hover h-full">
+                  <CardContent className="p-6 text-center text-sm text-muted-foreground">
+                    Delivery phases will appear once published.
+                  </CardContent>
+                </Card>
+              )}
             </div>
+            {approachError && (
+              <p className="mt-6 text-center text-xs text-amber-600">
+                Showing the latest published delivery phases while the live data refreshes.
+              </p>
+            )}
           </div>
         </section>
 

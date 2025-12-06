@@ -3,29 +3,22 @@ import Footer from "@/components/Footer";
 import About from "@/components/About";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import {CareerTimeline} from '@/types/interface'
+import { CareerTimeline, ProfessionalService } from "@/types/interface";
 import useAbout from "@/hooks/useAbout";
 
-
-const professionalService = [
-  {
-    title: "Program Committees",
-    description: "IEEE Blockchain, ACM SAC, and multiple international cybersecurity symposia.",
-  },
-  {
-    title: "Journal Reviewer",
-    description: "IEEE Transactions on Services Computing, IEEE IoT Journal, Elsevier Future Generation Computer Systems.",
-  },
-  {
-    title: "Industry Advisory",
-    description: "FinTech scale-ups and public-sector taskforces on digital trust and regulatory readiness.",
-  },
-];
-
 const AboutPage = () => {
-  
-  const { careerTimelineData, loading } = useAbout();
-  const academicTimeline: CareerTimeline[] = careerTimelineData;
+  const { profile, highlights, narratives, careerTimelineData, hero, professionalServices, loading } = useAbout();
+  const academicTimeline: CareerTimeline[] = careerTimelineData
+    .slice()
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
+  const heroTitle = hero?.hero_title ?? "Championing resilient, equitable digital transformation";
+  const heroDescription = hero?.description ??
+    "An academic career dedicated to bridging rigorous scholarship with applied impact, mentoring diverse cohorts of emerging researchers, and shaping global conversations on cybersecurity and financial technology.";
+  const sortedServices = professionalServices
+    .slice()
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0));
+
   return (
     <div className="min-h-screen flex flex-col">
       <Navigation />
@@ -36,13 +29,8 @@ const AboutPage = () => {
               <Badge variant="outline" className="uppercase tracking-wide text-xs">
                 About
               </Badge>
-              <h1 className="text-4xl font-bold tracking-tight text-foreground">
-                Championing resilient, equitable digital transformation
-              </h1>
-              <p className="text-lg text-muted-foreground">
-                An academic career dedicated to bridging rigorous scholarship with applied impact, mentoring diverse
-                cohorts of emerging researchers, and shaping global conversations on cybersecurity and financial technology.
-              </p>
+              <h1 className="text-4xl font-bold tracking-tight text-foreground">{heroTitle}</h1>
+              <p className="text-lg text-muted-foreground">{heroDescription}</p>
             </div>
           </div>
         </section>
@@ -51,8 +39,14 @@ const AboutPage = () => {
           <About
             showBackground={false}
             className="py-12"
-            title="Academic Journey"
-            description="Key milestones and areas of expertise that underpin current research directions."
+            title={profile?.title ?? "Academic Journey"}
+            description={
+              profile?.subtitle ??
+              "Key milestones and areas of expertise that underpin current research directions."
+            }
+            profile={profile}
+            highlights={highlights}
+            narratives={narratives}
           />
         </section>
 
@@ -65,19 +59,28 @@ const AboutPage = () => {
               </p>
             </div>
             <div className="space-y-6">
-              {academicTimeline.map((item) => (
-                <Card key={item.title} className="border-l-4 border-l-sky-200">
-                  <CardContent className="p-6">
-                    <div className="flex flex-col gap-2">
-                      <Badge variant="secondary" className="self-start uppercase tracking-wide text-xs">
-                        {item.period}
-                      </Badge>
-                      <h3 className="text-lg font-semibold text-foreground">{item.title},{item.institution}</h3>
-                      <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+              {loading && academicTimeline.length === 0 ? (
+                <p className="text-center text-muted-foreground">Loading career timeline…</p>
+              ) : academicTimeline.length === 0 ? (
+                <p className="text-center text-muted-foreground">No timeline entries available yet.</p>
+              ) : (
+                academicTimeline.map((item) => (
+                  <Card key={item.id ?? `${item.title}-${item.period}`} className="border-l-4 border-l-sky-200">
+                    <CardContent className="p-6">
+                      <div className="flex flex-col gap-2">
+                        <Badge variant="secondary" className="self-start uppercase tracking-wide text-xs">
+                          {item.period}
+                        </Badge>
+                        <h3 className="text-lg font-semibold text-foreground">
+                          {item.title}
+                          {item.institution ? `, ${item.institution}` : ""}
+                        </h3>
+                        <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                ))
+              )}
             </div>
           </div>
         </section>
@@ -91,16 +94,22 @@ const AboutPage = () => {
               </p>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {professionalService.map((item) => (
-                <Card key={item.title} className="card-hover h-full">
-                  <CardHeader>
-                    <CardTitle className="text-lg">{item.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
-                  </CardContent>
-                </Card>
-              ))}
+              {loading && sortedServices.length === 0 ? (
+                <p className="col-span-full text-center text-muted-foreground">Loading professional services…</p>
+              ) : sortedServices.length === 0 ? (
+                <p className="col-span-full text-center text-muted-foreground">No professional service entries available yet.</p>
+              ) : (
+                sortedServices.map((item: ProfessionalService) => (
+                  <Card key={item.id} className="card-hover h-full">
+                    <CardHeader>
+                      <CardTitle className="text-lg">{item.title}</CardTitle>
+                    </CardHeader>
+                    <CardContent>
+                      <p className="text-sm text-muted-foreground leading-relaxed">{item.description}</p>
+                    </CardContent>
+                  </Card>
+                ))
+              )}
             </div>
           </div>
         </section>

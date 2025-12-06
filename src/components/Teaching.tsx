@@ -1,10 +1,14 @@
 
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { useMemo } from "react";
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { BookOpen, Users, Calendar } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { BookOpen, Users, Calendar, GraduationCap, UserCheck } from "lucide-react";
+import { Link } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import { courses } from "@/data/courses";
 import useTeaching  from "@/hooks/useTeaching";
+import useStudents from "@/hooks/useStudents";
 
 
 type TeachingProps = {
@@ -22,6 +26,27 @@ const Teaching = ({
 }: TeachingProps) => {
 
   const { coursesData, loading } = useTeaching();
+  const { studentsData, loading: loadingStudents, error: studentError } = useStudents();
+
+  const studentSummary = useMemo(() => {
+    if (!studentsData?.length) {
+      return {
+        activePhd: 0,
+        activeMsc: 0,
+        alumni: 0,
+      };
+    }
+
+    const activePhd = studentsData.filter(
+      (student) => student.program === "PhD" && student.status === "Active"
+    ).length;
+    const activeMsc = studentsData.filter(
+      (student) => student.program === "MSc" && student.status === "Active"
+    ).length;
+    const alumni = studentsData.filter((student) => student.status === "Completed").length;
+
+    return { activePhd, activeMsc, alumni };
+  }, [studentsData]);
 
   
 
@@ -79,25 +104,65 @@ const Teaching = ({
         </div>
 
         <div className="mt-16 max-w-3xl mx-auto">
-          <Card className="bg-secondary/50 border-0">
-            <CardContent className="p-8 text-center">
-              <h3 className="text-2xl font-semibold mb-4">For Students</h3>
-              <p className="text-muted-foreground mb-6 leading-relaxed">
-                I welcome motivated students interested in research opportunities, project supervision, 
-                or academic guidance in cybersecurity, blockchain, and related fields. 
-                Please reach out via email with your CV and research interests.
-              </p>
-              <div className="flex flex-col sm:flex-row gap-4 justify-center text-sm">
-                <div className="flex items-center justify-center gap-2">
-                  <span className="font-medium">PhD Supervision:</span>
-                  <span className="text-muted-foreground">Available</span>
+          <Card className="bg-secondary/40 border border-primary/10">
+            <CardContent className="p-8 text-center space-y-6">
+              <div className="space-y-2">
+                <h3 className="text-2xl font-semibold">For Prospective Students</h3>
+                <p className="text-muted-foreground leading-relaxed">
+                  I work closely with postgraduate researchers tackling challenges across cybersecurity, distributed ledgers,
+                  and responsible fintech. Share your CV, research interests, and availability to explore supervision options.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 text-sm">
+                <div className="rounded-lg bg-background/80 border border-primary/10 p-4 flex flex-col items-center gap-2">
+                  <span className="inline-flex items-center gap-2 text-primary font-medium">
+                    <GraduationCap className="h-4 w-4" /> PhD Researchers
+                  </span>
+                  <span className="text-2xl font-semibold text-foreground">
+                    {loadingStudents ? "—" : studentSummary.activePhd}
+                  </span>
+                  <span className="text-xs uppercase tracking-wide text-muted-foreground">Currently supervised</span>
                 </div>
-                <div className="flex items-center justify-center gap-2">
-                  <span className="font-medium">MSc Projects:</span>
-                  <span className="text-muted-foreground">Available</span>
+                <div className="rounded-lg bg-background/80 border border-primary/10 p-4 flex flex-col items-center gap-2">
+                  <span className="inline-flex items-center gap-2 text-primary font-medium">
+                    <UserCheck className="h-4 w-4" /> MSc Projects
+                  </span>
+                  <span className="text-2xl font-semibold text-foreground">
+                    {loadingStudents ? "—" : studentSummary.activeMsc}
+                  </span>
+                  <span className="text-xs uppercase tracking-wide text-muted-foreground">Active collaborations</span>
+                </div>
+                <div className="rounded-lg bg-background/80 border border-primary/10 p-4 flex flex-col items-center gap-2">
+                  <span className="inline-flex items-center gap-2 text-primary font-medium">
+                    <Users className="h-4 w-4" /> Alumni Network
+                  </span>
+                  <span className="text-2xl font-semibold text-foreground">
+                    {loadingStudents ? "—" : studentSummary.alumni}
+                  </span>
+                  <span className="text-xs uppercase tracking-wide text-muted-foreground">Completed researchers</span>
                 </div>
               </div>
+
+              {studentError && (
+                <p className="text-xs text-amber-600 bg-amber-100/60 rounded-md px-3 py-2">
+                  Live student data is unavailable at the moment; figures reflect the latest snapshot.
+                </p>
+              )}
             </CardContent>
+            <CardFooter className="pb-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <span className="font-medium text-foreground">PhD Supervision:</span>
+                <span>Open for 2025 intake</span>
+              </div>
+              <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                <span className="font-medium text-foreground">MSc Projects:</span>
+                <span>Discuss bespoke briefs</span>
+              </div>
+              <Button asChild variant="secondary" size="sm" className="mt-4 sm:mt-0">
+                <Link to="/students">Explore student directory</Link>
+              </Button>
+            </CardFooter>
           </Card>
         </div>
       </div>
